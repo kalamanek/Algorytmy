@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1570980482 source:c:\jakiesalgorytmy\diff\main.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<iterator>
+	<algorithm>
+	<sstream>
+

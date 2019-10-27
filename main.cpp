@@ -29,7 +29,8 @@ void wypiszTablice(int &dlugosc, string * tab){
         cout << tab[i] << endl;
 }
 
-void przygotujTabliceWynikow(string * &p, int &iloscLinijekPierwszy ,string * &d, int  &iloscLinijekDrugi , int ** &tablica){
+void przygotujTabliceWynikow(string * p, int &iloscLinijekPierwszy ,string * d, int  &iloscLinijekDrugi , int ** tablica){
+
     for(int i = 0 ; i <= iloscLinijekDrugi ; i++)
         tablica[i][0] = 0;
 
@@ -51,7 +52,8 @@ void przygotujTabliceWynikow(string * &p, int &iloscLinijekPierwszy ,string * &d
     lista = new pair<int,int>[tablica[iloscLinijekDrugi][iloscLinijekPierwszy]];
 
     int i = iloscLinijekDrugi, k = iloscLinijekPierwszy;
-    int pozycja = tablica[iloscLinijekDrugi][iloscLinijekPierwszy]-1;
+    int pozycja = tablica[iloscLinijekDrugi][iloscLinijekPierwszy] - 1;
+
     while(i!=0 && k !=0){
         if(tablica[i][k] == tablica[i-1][k])
             i--;
@@ -64,9 +66,10 @@ void przygotujTabliceWynikow(string * &p, int &iloscLinijekPierwszy ,string * &d
             i--;
         }
     }
+    /*
     pozycja = 0;
     // wypisanie wspolnego
-    cout<< "najdluzszy wspolny podciag tych plikow to: "<<endl;
+    cout<< "\nnajdluzszy wspolny podciag tych plikow to: "<<endl;
     for(int i = 0 ; pozycja < tablica[iloscLinijekDrugi][iloscLinijekPierwszy];i++){
         if(lista[pozycja].first == i){
             cout << "pozycja w pierwszym: "<<lista[pozycja].first <<" pozycja w drugim : "<<lista[pozycja].second <<" linia : "<<p[i]<<endl;
@@ -74,7 +77,7 @@ void przygotujTabliceWynikow(string * &p, int &iloscLinijekPierwszy ,string * &d
         }
     }
     pozycja = 0;
-    cout << "dodatkowo w pierwszym znajuje sie: "<<endl;
+    cout << "\ndodatkowo w pierwszym znajuje sie: "<<endl;
     for(int i = 0 ; pozycja < tablica[iloscLinijekDrugi][iloscLinijekPierwszy];i++){
         if(lista[pozycja].first == i){
             pozycja++;
@@ -83,17 +86,48 @@ void przygotujTabliceWynikow(string * &p, int &iloscLinijekPierwszy ,string * &d
         }
     }
     pozycja = 0;
-    cout << "a w drugim: "<<endl;
-    for(int i = 0 ;
-    \pozycja < tablica[iloscLinijekDrugi][iloscLinijekPierwszy] ;i++){
+    cout << "\na w drugim: "<<endl;
+    for(int i = 0 ; pozycja < tablica[iloscLinijekDrugi][iloscLinijekPierwszy] ;i++){
         if(lista[pozycja].second == i){
             pozycja++;
         }else{
              cout << "pozycja w drugim: "<< i << " linia : " << d[i]<<endl;
         }
     }
-}
+    */
 
+    cout << "\n diff: \n"<<endl;
+    pair<int,int> * pomocnicza = lista;
+    k = i = 0;
+
+   for(int j = 0 ; j < tablica[iloscLinijekDrugi][iloscLinijekPierwszy] ; j++){
+        while(i < pomocnicza->first){
+            cout << "- " << p[i] << endl;
+            i++;
+        }
+        while(k < pomocnicza->second){
+            cout << "+ " << d[k] << endl;
+            k++;
+        }
+
+        cout << " " << p[i] << endl;
+
+        pomocnicza++;
+        k++;
+        i++;
+   }
+    while(i < iloscLinijekPierwszy){
+        cout << "- " << p[i] << endl;
+        i++;
+    }
+
+    while(k < iloscLinijekDrugi){
+            cout << "+ " << d[k] << endl;
+            k++;
+    }
+
+
+}
 
 
 int main () {
@@ -108,12 +142,6 @@ int main () {
     int iloscLinijekPierwszy = policzLinijki(pierwszy),
         iloscLinijekDrugi = policzLinijki(drugi);
 
-
-    pierwszy.clear();
-    drugi.clear();
-    pierwszy.seekg(0);
-    drugi.seekg(0);
-
     int ** tablica = new int*[iloscLinijekDrugi+1];
 
     for(int i = 0 ; i <= iloscLinijekDrugi ; i++)
@@ -124,6 +152,9 @@ int main () {
     string * d = new string[iloscLinijekDrugi];
     uzupelnijTablice(iloscLinijekDrugi,d,drugi);
 
+    pierwszy.close();
+    drugi.close();
+
     cout << "pierwszy plik zawiera: \n\n";
     wypiszTablice(iloscLinijekPierwszy,p);
     cout << "\ndrugi plik zawiera: \n\n";
@@ -131,8 +162,6 @@ int main () {
 
     przygotujTabliceWynikow(p,iloscLinijekPierwszy,d,iloscLinijekDrugi,tablica);
 
-    pierwszy.close();
-    drugi.close();
     delete [] p;
     delete [] d;
     for(int i = 0 ; i < iloscLinijekDrugi ; i++)
